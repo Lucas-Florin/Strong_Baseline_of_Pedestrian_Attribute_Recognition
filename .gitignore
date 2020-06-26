@@ -1,3 +1,6 @@
 .idea/*
 data/*
 exp_result/*
+scp.sh
+*/__pycache__/*
+__pycache__/*
