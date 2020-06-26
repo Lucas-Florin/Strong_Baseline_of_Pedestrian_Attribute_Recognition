@@ -16,7 +16,7 @@ from models.resnet import resnet50
 from tools.function import get_model_log_path, get_pedestrian_metrics
 from tools.utils import time_str, save_ckpt, ReDirectSTD, set_seed
 
-set_seed(605)
+set_seed(0)
 
 
 def main(args):
@@ -31,6 +31,9 @@ def main(args):
         ReDirectSTD(stdout_file, 'stdout', False)
 
     pprint.pprint(OrderedDict(args.__dict__))
+
+    os.environ['CUDA_DEVICE_ORDER'] = 'PCI_BUS_ID'
+    os.environ['CUDA_VISIBLE_DEVICES'] = str(args.device)
 
     print('-' * 60)
     print(f'use GPU{args.device} for training')
@@ -74,8 +77,8 @@ def main(args):
 
     criterion = CEL_Sigmoid(sample_weight)
 
-    param_groups = [{'params': model.finetune_params(), 'lr': args.lr_ft},
-                    {'params': model.fresh_params(), 'lr': args.lr_new}]
+    param_groups = [{'params': model.module.finetune_params(), 'lr': args.lr_ft},
+                    {'params': model.module.fresh_params(), 'lr': args.lr_new}]
     optimizer = torch.optim.SGD(param_groups, momentum=args.momentum, weight_decay=args.weight_decay, nesterov=False)
     lr_scheduler = ReduceLROnPlateau(optimizer, factor=0.1, patience=4)
 
