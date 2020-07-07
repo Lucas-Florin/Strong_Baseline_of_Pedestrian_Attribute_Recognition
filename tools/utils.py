@@ -321,7 +321,7 @@ def save_ckpt(model, ckpt_files, epoch, metric):
     if not os.path.exists(os.path.dirname(os.path.abspath(ckpt_files))):
         os.makedirs(os.path.dirname(os.path.abspath(ckpt_files)))
 
-    save_dict = {'state_dicts': model.state_dict(),
+    save_dict = {'state_dict': model.state_dict(),
                  'epoch': f'{time_str()} in epoch {epoch}',
                  'metric': metric}
     torch.save(save_dict, ckpt_files)

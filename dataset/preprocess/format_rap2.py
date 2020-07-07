@@ -66,5 +66,5 @@ def generate_data_description(save_dir, reorder):
 
 if __name__ == "__main__":
     save_dir = './data/RAP2/'
-    reorder = True
+    reorder = False
     generate_data_description(save_dir, reorder)
