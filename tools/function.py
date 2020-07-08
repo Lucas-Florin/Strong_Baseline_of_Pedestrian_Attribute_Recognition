@@ -126,12 +126,12 @@ def get_pedestrian_metrics(gt_label, preds_probs, threshold=0.5):
     instance_acc = intersect_pos / (union_pos + eps)
     instance_prec = intersect_pos / (true_pos + eps)
     instance_recall = intersect_pos / (gt_pos + eps)
-    instance_f1 = 2 * instance_prec * instance_recall / (instance_prec + instance_recall + eps)
+
 
     instance_acc = np.mean(instance_acc)
     instance_prec = np.mean(instance_prec)
     instance_recall = np.mean(instance_recall)
-    instance_f1 = np.mean(instance_f1)
+    instance_f1 = 2 * instance_prec * instance_recall / (instance_prec + instance_recall + eps)
 
     result.instance_acc = instance_acc
     result.instance_prec = instance_prec
