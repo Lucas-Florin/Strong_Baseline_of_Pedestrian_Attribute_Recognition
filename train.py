@@ -80,8 +80,7 @@ def main(args):
     param_groups = [{'params': model.module.finetune_params(), 'lr': args.lr_ft},
                     {'params': model.module.fresh_params(), 'lr': args.lr_new}]
     optimizer = torch.optim.SGD(param_groups, momentum=args.momentum, weight_decay=args.weight_decay, nesterov=False)
-    #lr_scheduler = ReduceLROnPlateau(optimizer, factor=0.1, patience=4)
-    lr_scheduler = MultiStepLR(optimizer, [14], gamma=0.1)
+    lr_scheduler = MultiStepLR(optimizer, args.lr_scheduler_steps, gamma=0.1)
 
     best_metric, epoch = trainer(epoch=args.train_epoch,
                                  model=model,
@@ -118,8 +117,8 @@ def trainer(epoch, model, train_loader, valid_loader, criterion, optimizer, lr_s
             valid_loader=valid_loader,
             criterion=criterion,
         )
+        torch.save({'gt': valid_gt, 'lb': valid_probs}, os.path.join(os.path.dirname(path), 'results.pkl'))
 
-        #lr_scheduler.step(metrics=valid_loss, epoch=i)
         lr_scheduler.step()
 
         train_result = get_pedestrian_metrics(train_gt, train_probs)

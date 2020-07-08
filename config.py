@@ -14,6 +14,8 @@ def argument_parser():
     parser.add_argument("--width", type=int, default=192)
     parser.add_argument("--lr_ft", type=float, default=0.01, help='learning rate of feature extractor')
     parser.add_argument("--lr_new", type=float, default=0.1, help='learning rate of classifier_base')
+    parser.add_argument('--lr-scheduler-steps', default=[15, 20, 25], nargs='+', type=int,
+                        help='stepsize to decay learning rate')
     parser.add_argument('--classifier', type=str, default='base', help='classifier name')
     parser.add_argument('--momentum', type=float, default=0.9)
     parser.add_argument('--weight_decay', type=float, default=5e-4)
